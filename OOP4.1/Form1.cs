@@ -1,80 +1,108 @@
+using OOP4._1.Service;
+using OOP4._1.Shapes;
+
 namespace OOP4._1
 {
     public partial class Form1 : Form
     {
+        ShapeService shapeService = new ShapeService();
+        ShapeCreator shapeCreator;
+        Bitmap map;
+        bool ctrl = false;
+        string color = "Black";
+        static string[] colors = { "Black", "Blue", "Red", "Green", "Purple" };
         public Form1()
         {
             InitializeComponent();
-        }
-        List<CCircle> listCircles= new List<CCircle>();
-        bool ctrl = false;
-        bool flagctrl = false;
-
-        private void Form1_Paint(object sender, PaintEventArgs e)
-        {
-            Pen pen = new Pen(Color.Red);
-            foreach(var circle in listCircles)
-            {
-                if (circle.color == "Red")
-                    pen.Color = Color.Red;
-                else
-                    pen.Color = Color.Black;
-                e.Graphics.DrawEllipse(pen, circle.x - circle.radius, circle.y - circle.radius, circle.radius * 2, circle.radius * 2);
-            }
-        }
-
-        private void Form1_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (ctrl == false)
-            {
-                foreach (var circle in listCircles)
-                {
-                    circle.color = "Black";
-                }
-                CCircle cCircle = new CCircle(e.X, e.Y);
-                listCircles.Add(cCircle);
-            }
-            else
-            {
-                foreach (var circle in listCircles)
-                {
-                    if (Math.Pow(e.X - circle.x, 2) + Math.Pow(e.Y - circle.y, 2) <= Math.Pow(circle.radius, 2) && circle.color != "Red")
-                    {
-                        circle.color = "Red";
-                        if (checkBox2.Checked)
-                            break;
-                    }
-                }
-            }
-            Refresh();
+            map = new Bitmap(paintField.Width, paintField.Height);
+            shapeCreator = new ShapeCreator(Graphics.FromImage(map));
+            comboBoxShapes.SelectedIndex = 0;
+            comboBoxColor.SelectedIndex = 0;
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            if ((ModifierKeys & Keys.Control) == Keys.Control)
+            {
+                ctrl = true;
+                shapeService.ChangeControl();
+            }
             if (e.KeyCode == Keys.Delete)
             {
-                for (int i = 0; i < listCircles.Count; i++)
-                {
-                    if (listCircles[i].color == "Red")
-                    {
-                        listCircles.Remove(listCircles[i]);
-                        i--;
-                    }
-                }
-                Refresh();
+                shapeService.DeleteSelectedShapes();
             }
-            if (ModifierKeys == Keys.Control)
+            if (e.KeyCode == Keys.A)
             {
-                flagctrl = !flagctrl;
-                checkBox1.Checked = !checkBox1.Checked;
-                if(flagctrl)
-                    ctrl = !ctrl;
+                shapeService.MoveShape(-5, 0, paintField.Width, paintField.Height);
+            }
+            if (e.KeyCode == Keys.S)
+            {
+                shapeService.MoveShape(0, 5, paintField.Width, paintField.Height);
+            }
+            if (e.KeyCode == Keys.D)
+            {
+                shapeService.MoveShape(5, 0, paintField.Width, paintField.Height);
+            }
+            if (e.KeyCode == Keys.W)
+            {
+                shapeService.MoveShape(0, -5, paintField.Width, paintField.Height);
+            }
+            if (e.KeyCode == Keys.E)
+            {
+                shapeService.ResizeShape(1, paintField.Width, paintField.Height);
+            }
+            if (e.KeyCode == Keys.Q)
+            {
+                shapeService.ResizeShape(-1, paintField.Width, paintField.Height);
+            }
+        }
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if ((ModifierKeys & Keys.Control) != Keys.Control && ctrl)
+            {
+                ctrl = false;
+                shapeService.ChangeControl();
             }
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void paintField_MouseClick(object sender, MouseEventArgs e)
         {
-            if (flagctrl == false)
-                ctrl = !ctrl;
+            if (comboBoxShapes.SelectedIndex == 0)
+                shapeService.AddOrSelect(shapeCreator.CreateCircle(e.Location, color));
+            else if (comboBoxShapes.SelectedIndex == 1)
+                shapeService.AddOrSelect(shapeCreator.CreateSquare(e.Location, color));
+            else if (comboBoxShapes.SelectedIndex == 2)
+                shapeService.AddOrSelect(shapeCreator.CreateTriangle(e.Location, color));
+            paintField.Invalidate();
+        }
+
+        private void paintField_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics.FromImage(map).Clear(Color.LightGray);
+            shapeService.DrawShapes();
+            paintField.Image = map;
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            Graphics.FromImage(map).Clear(Color.LightGray);
+            shapeService.DeleteAllShapes();
+        }
+
+        private void comboBoxColor_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            color = colors[comboBoxColor.SelectedIndex];
+            shapeService.ChangeColor(color);
+        }
+
+        private void cbSelectMany_CheckedChanged(object sender, EventArgs e)
+        {
+            shapeService.ChangeSelectMany();
+        }
+
+        private void cbCtrl_CheckedChanged(object sender, EventArgs e)
+        {
+            ctrl = !ctrl;
+            shapeService.ChangeControl();
         }
     }
 }

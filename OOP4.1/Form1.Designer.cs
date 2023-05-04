@@ -28,52 +28,151 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.SuspendLayout();
+            paintField = new PictureBox();
+            panel2 = new Panel();
+            comboBoxShapes = new ComboBox();
+            btnDelete = new Button();
+            cbSelectMany = new CheckBox();
+            comboBoxColor = new ComboBox();
+            checkBox1 = new CheckBox();
+            label2 = new Label();
+            blbShape = new Label();
+            panel1 = new Panel();
+            ((System.ComponentModel.ISupportInitialize)paintField).BeginInit();
+            panel2.SuspendLayout();
+            panel1.SuspendLayout();
+            SuspendLayout();
+            // 
+            // paintField
+            // 
+            paintField.Location = new Point(0, 0);
+            paintField.Name = "paintField";
+            paintField.Size = new Size(642, 321);
+            paintField.TabIndex = 2;
+            paintField.TabStop = false;
+            paintField.Paint += paintField_Paint;
+            paintField.MouseClick += paintField_MouseClick;
+            // 
+            // panel2
+            // 
+            panel2.Controls.Add(paintField);
+            panel2.Location = new Point(366, 40);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(656, 318);
+            panel2.TabIndex = 9;
+            // 
+            // comboBoxShapes
+            // 
+            comboBoxShapes.FormattingEnabled = true;
+            comboBoxShapes.Items.AddRange(new object[] { "Круг", "Квадрат", "Треугольник" });
+            comboBoxShapes.Location = new Point(26, 49);
+            comboBoxShapes.Name = "comboBoxShapes";
+            comboBoxShapes.Size = new Size(173, 23);
+            comboBoxShapes.TabIndex = 4;
+            // 
+            // btnDelete
+            // 
+            btnDelete.Location = new Point(26, 211);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(173, 23);
+            btnDelete.TabIndex = 3;
+            btnDelete.Text = "Delete";
+            btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
+            // 
+            // cbSelectMany
+            // 
+            cbSelectMany.AutoSize = true;
+            cbSelectMany.Location = new Point(26, 170);
+            cbSelectMany.Name = "cbSelectMany";
+            cbSelectMany.Size = new Size(289, 19);
+            cbSelectMany.TabIndex = 1;
+            cbSelectMany.Text = "Выделять только один объект при пересечении";
+            cbSelectMany.UseVisualStyleBackColor = true;
+            cbSelectMany.CheckedChanged += cbSelectMany_CheckedChanged;
+            // 
+            // comboBoxColor
+            // 
+            comboBoxColor.FormattingEnabled = true;
+            comboBoxColor.Items.AddRange(new object[] { "Черный", "Синий", "Красный", "Зеленый", "Фиолетовый" });
+            comboBoxColor.Location = new Point(26, 94);
+            comboBoxColor.Name = "comboBoxColor";
+            comboBoxColor.Size = new Size(173, 23);
+            comboBoxColor.TabIndex = 6;
+            comboBoxColor.SelectedIndexChanged += comboBoxColor_SelectedIndexChanged;
             // 
             // checkBox1
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(36, 29);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(97, 19);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Работает Ctrl";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new Point(26, 145);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(97, 19);
+            checkBox1.TabIndex = 0;
+            checkBox1.Text = "Работает Ctrl";
+            checkBox1.UseVisualStyleBackColor = true;
+            checkBox1.CheckedChanged += cbCtrl_CheckedChanged;
             // 
-            // checkBox2
+            // label2
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(36, 54);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(289, 19);
-            this.checkBox2.TabIndex = 1;
-            this.checkBox2.Text = "Выделять только один объект при пересечении";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            label2.AutoSize = true;
+            label2.Location = new Point(26, 73);
+            label2.Name = "label2";
+            label2.Size = new Size(33, 15);
+            label2.TabIndex = 7;
+            label2.Text = "Цвет";
+            // 
+            // blbShape
+            // 
+            blbShape.AutoSize = true;
+            blbShape.Location = new Point(26, 28);
+            blbShape.Name = "blbShape";
+            blbShape.Size = new Size(47, 15);
+            blbShape.TabIndex = 5;
+            blbShape.Text = "Фигура";
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(blbShape);
+            panel1.Controls.Add(label2);
+            panel1.Controls.Add(checkBox1);
+            panel1.Controls.Add(comboBoxColor);
+            panel1.Controls.Add(cbSelectMany);
+            panel1.Controls.Add(btnDelete);
+            panel1.Controls.Add(comboBoxShapes);
+            panel1.Location = new Point(22, 40);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(326, 318);
+            panel1.TabIndex = 8;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1022, 544);
-            this.Controls.Add(this.checkBox2);
-            this.Controls.Add(this.checkBox1);
-            this.KeyPreview = true;
-            this.Name = "Form1";
-            this.Text = "Form1";
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
-            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseClick);
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1022, 409);
+            Controls.Add(panel2);
+            Controls.Add(panel1);
+            KeyPreview = true;
+            Name = "Form1";
+            Text = "Form1";
+            KeyDown += Form1_KeyDown;
+            KeyUp += Form1_KeyUp;
+            ((System.ComponentModel.ISupportInitialize)paintField).EndInit();
+            panel2.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            ResumeLayout(false);
         }
 
         #endregion
-
+        private PictureBox paintField;
+        private Panel panel2;
+        private ComboBox comboBoxShapes;
+        private Button btnDelete;
+        private CheckBox cbSelectMany;
+        private ComboBox comboBoxColor;
         private CheckBox checkBox1;
-        private CheckBox checkBox2;
+        private Label label2;
+        private Label blbShape;
+        private Panel panel1;
     }
 }
