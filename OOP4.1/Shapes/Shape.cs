@@ -2,35 +2,21 @@
 {
     abstract public class Shape
     {
-        protected Graphics g;
+        public Graphics g;
         protected Point p;
         protected bool selected = false;
         public string color = "Red"; 
         public int height = 40;
-        public Shape(Point click, Graphics graphics, string color)
-        {
-            this.p = click;
-            this.g = graphics;
-            this.color = color;
-        }
         public abstract void Draw();
-        public bool GetSelect()
-        {
-            return selected;
-        }
-        public void UnSelect()
-        {
-            selected = false;
-        }
-        public void ChangeSelect()
-        {
-            selected = !selected;
-        }
-        public Point GetPoint()
+        virtual public Point GetPoint()
         {
             return p;
         }
-        public bool CheckClick(Point point)
+        virtual public Graphics GetGraphics()
+        {
+            return g;
+        }
+        virtual public bool CheckClick(Point point)
         {
             double length = Math.Sqrt(Math.Pow(point.X - p.X, 2) +  Math.Pow(point.Y - p.Y, 2));
             if (length <= height/2)
@@ -40,23 +26,51 @@
             return false;
         }
 
-        public int GetHeight()
+        virtual public int GetHeight()
         {
             return height;
         }
+        virtual public string GetColor()
+        {
+            return color;
+        }
 
-        public void Move(int x, int y)
+        virtual public void Move(int x, int y)
         {
             p.X += x;
             p.Y += y;
         }
-        public void ChangeSize(int size)
+        virtual public void ChangeSize(int size)
         {
             height += size;
         }
-        public void ChangeColor(string color)
+        virtual public void ChangeColor(string color)
         { 
             this.color = color;
         }
+        virtual public bool CheckMovePosition(int x, int y, int panelWidth, int panelHeight)
+        {
+            if ((p.X + this.height / 2 + x < panelWidth) && (p.Y + this.height / 2 + y < panelHeight) && (p.X - this.height / 2 + x > 0) && (p.Y - this.height / 2 + y > 0))
+                return true;
+            else
+                return false;
+        }
+        virtual public bool CheckSizePosition(int resize, int panelWidth, int panelHeight)
+        {
+            if ((p.X + (this.height + resize) / 2 < panelWidth) && (p.Y + (this.height + resize) / 2 < panelHeight) && (p.X - (this.height + resize) / 2 > 0) && (p.Y - (this.height + resize) / 2 > 0))
+                return true;
+            else
+                return false;
+        }
+
+        virtual public void Load(StreamReader streamReader)
+        {
+            return;
+        }
+        virtual public void Save(StreamWriter streamWriter)
+        {
+            return;
+        }
+
     }
 }

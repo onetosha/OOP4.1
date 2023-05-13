@@ -1,9 +1,14 @@
-﻿namespace OOP4._1.Shapes
+﻿using System.Drawing;
+
+namespace OOP4._1.Shapes
 {
     public class Square : Shape
     {
-        public Square(Point click, Graphics graphics, string color) : base(click, graphics, color)
+        public Square(Point click, Graphics graphics, string color)
         {
+            this.p = click;
+            this.g = graphics;
+            this.color = color;
         }
         public override void Draw()
         {
@@ -18,13 +23,20 @@
             else if (color == "Purple")
                 pen.Color = Color.Purple;
             g.DrawRectangle(pen, p.X - height / 2, p.Y - height / 2, height, height);
-            if (selected)
-            {
-                pen.Width = 2;
-                pen.Color = Color.Black;
-                pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
-                g.DrawRectangle(pen, p.X - (height + 8) / 2, p.Y - (height + 8) / 2, (height + 8), height + 8);
-            }
+        }
+        public override void Save(StreamWriter stream)
+        {
+            stream.WriteLine("S");
+            stream.WriteLine("{0} {1} {2} {3}", p.X, p.Y, height, color);
+        }
+
+        public override void Load(StreamReader stream)
+        {
+            string[] values = stream.ReadLine().Split(' ');
+            p.X = int.Parse(values[0]);
+            p.Y = int.Parse(values[1]);
+            height = int.Parse(values[2]);
+            color = values[3].ToString();
         }
     }
 }

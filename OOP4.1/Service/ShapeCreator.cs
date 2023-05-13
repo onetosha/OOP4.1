@@ -1,4 +1,5 @@
-﻿using OOP4._1.Shapes;
+﻿using OOP4._1.Composite;
+using OOP4._1.Shapes;
 
 namespace OOP4._1.Service
 {
@@ -20,6 +21,10 @@ namespace OOP4._1.Service
         public Square CreateSquare(Point click, string color)
         {
             return new Square(click, this.g, color);
+        }
+        public CGroup CreateCGroup()
+        {
+            return new CGroup(this.g);
         }
     }
 }
