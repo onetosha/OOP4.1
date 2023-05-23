@@ -5,10 +5,11 @@ using OOP4._1.Composite;
 using System.Globalization;
 using OOP4._1.Factory;
 using System.IO;
+using OOP4._1.Observer;
 
 namespace OOP4._1.Service
 {
-    public class ShapeService : Shape
+    public class ShapeService : Shape, ICObserver
     {
         private Container<Shape> shapes;
         StreamWriter streamWriter = null;
@@ -16,12 +17,48 @@ namespace OOP4._1.Service
         bool ctrl = false;
         bool selectMany = false;
         public ShapeDecorator decorator;
+        private TreeViewObserver treeViewObserver;
         int panelWidth, panelHeight;
-        public ShapeService(int panelWidth, int panelHeight)
+        public ShapeService(TreeViewObserver treeViewObserver, int panelWidth, int panelHeight)
         {
+            shapes = new Container<Shape>();
+            this.treeViewObserver = treeViewObserver;
+            treeViewObserver.AddObserver(this);
+            this.AddObserver(treeViewObserver);
             this.panelWidth = panelWidth;
             this.panelHeight = panelHeight;
-            shapes = new Container<Shape>();
+        }
+        public void Add(Shape shape)
+        {
+            shape.AddObserver(treeViewObserver);
+            decorator = new ShapeDecorator(shape);
+            shapes.Remove(shape);
+            shapes.Add(decorator);
+            this.NotifyEveryone();
+            decorator.NotifyEveryoneSelect();
+        }
+        public void AddPointer(Shape Pointer)
+        {
+            int s1 = -1;
+            int s2 = -1;
+            int i = 0;
+            foreach (Shape shape in shapes)
+            {
+                if (shape is ShapeDecorator && s1 == -1)
+                    s1 = i;
+                else if (shape is ShapeDecorator)
+                {
+                    s2 = i;
+                }
+                i++;
+            }
+            if (Pointer is Pointer p)
+            {
+                p.AddShapes(shapes.GetByIndex(s2), shapes.GetByIndex(s1));
+            }
+            shapes.Add(Pointer);
+            this.NotifyEveryone();
+
         }
         public void Save()
         {
@@ -58,25 +95,45 @@ namespace OOP4._1.Service
                 shape.Draw();
             }
         }
-        public void Select(Point point)
+        public override void ChangeColor(string color)
+        {
+            foreach (var shape in shapes)
+            {
+                if (shape is ShapeDecorator)
+                {
+                    shape.ChangeColor(color);
+                }
+            }
+        }
+        public bool CheckClick(Point point)
         {
             if (!ctrl)
             {
                 UnSelect();
             }
+            if (Select(point))
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool Select(Point point)
+        {
+            bool result = false;
             foreach (var shape in shapes)
             {
                 if (!(shape is ShapeDecorator) && shape.CheckClick(point))
                 {
                     decorator = new ShapeDecorator(shape);
-                    shapes.Add(decorator);
                     shapes.Remove(shape);
+                    shapes.Add(decorator);
+                    this.NotifyEveryone();
+                    result = true;
                     if (!selectMany)
-                    {
-                        break;
-                    }
+                        return result;
                 }
             }
+            return result;
         }
         public void UnSelect()
         {
@@ -92,6 +149,7 @@ namespace OOP4._1.Service
         public void DeleteAllShapes()
         {
             shapes.Clear();
+            NotifyEveryone();
         }
         public void ChangeControl()
         {
@@ -111,15 +169,7 @@ namespace OOP4._1.Service
                     shapes.Remove(shape);
                 }
             }
-        }
-        public override bool CheckClick(Point point)
-        {
-            foreach(var shape in shapes)
-            {
-                if (shape.CheckClick(point)) 
-                    return true;
-            }
-            return false;
+            this.NotifyEveryone();
         }
         public override void Move(int x, int y)
         {
@@ -139,16 +189,6 @@ namespace OOP4._1.Service
                 }
             }
         }
-        public override void ChangeColor(string color)
-        {
-            foreach(var shape in shapes)
-            {
-                if (shape is ShapeDecorator)
-                {
-                    shape.ChangeColor(color);
-                }
-            }
-        }
         public void Group(CGroup cGroup)
         {
             foreach (var shape in shapes)
@@ -161,6 +201,9 @@ namespace OOP4._1.Service
             }
             decorator = new ShapeDecorator(cGroup);
             shapes.Add(decorator);
+            cGroup.AddObserver(treeViewObserver);
+            this.NotifyEveryone();
+            decorator.NotifyEveryoneSelect();
         }
         public void DeGroup()
         {
@@ -180,10 +223,47 @@ namespace OOP4._1.Service
                     }
                 }
             }
+            this.NotifyEveryone();
         }
         public Container<Shape> GetShapes() 
         { 
             return shapes; 
+        }
+        public int CountSelected()
+        {
+            int i = 0;
+            foreach (Shape shape in shapes)
+            {
+                if (shape is ShapeDecorator)
+                {
+                    i++;
+                }
+            }
+            return i;
+        }
+        public void OnSubjectChanged(CObject who)
+        {
+            string name = treeViewObserver.GetSelectedName();
+
+            if (ctrl == false)
+                UnSelect();
+            foreach (Shape shape in shapes)
+            {
+                if (!(shape is ShapeDecorator) && shape.Who() == name)
+                {
+                    decorator = new ShapeDecorator(shape);
+                    shapes.Remove(shape);
+                    shapes.Add(decorator);
+                }
+            }    
+        }
+        public void OnSubjectSelect(CObject who)
+        {
+
+        }
+
+        public void OnSubjectMove(int x, int y)
+        {
         }
         ~ShapeService()
         {

@@ -1,6 +1,9 @@
-﻿namespace OOP4._1.Shapes
+﻿using OOP4._1.Observer;
+using System;
+
+namespace OOP4._1.Shapes
 {
-    abstract public class Shape
+    abstract public class Shape : CObject, ICObserver
     {
         public Graphics g;
         protected Point p;
@@ -37,6 +40,7 @@
 
         virtual public void Move(int x, int y)
         {
+            NotifyEveryoneMove(x, y);
             p.X += x;
             p.Y += y;
         }
@@ -72,5 +76,19 @@
             return;
         }
 
+        public void OnSubjectChanged(CObject who)
+        {
+            return;
+        }
+
+        public void OnSubjectSelect(CObject who)
+        {
+            return;
+        }
+
+        public void OnSubjectMove(int x, int y)
+        {
+            Move(x, y);
+        }
     }
 }

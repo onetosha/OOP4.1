@@ -42,6 +42,7 @@
             btnSave = new Button();
             btnDeGroup = new Button();
             btnGroup = new Button();
+            treeShapes = new TreeView();
             ((System.ComponentModel.ISupportInitialize)paintField).BeginInit();
             panel2.SuspendLayout();
             panel1.SuspendLayout();
@@ -50,9 +51,8 @@
             // paintField
             // 
             paintField.Location = new Point(0, 0);
-            paintField.Margin = new Padding(3, 4, 3, 4);
             paintField.Name = "paintField";
-            paintField.Size = new Size(734, 496);
+            paintField.Size = new Size(517, 372);
             paintField.TabIndex = 2;
             paintField.TabStop = false;
             paintField.Paint += paintField_Paint;
@@ -61,29 +61,26 @@
             // panel2
             // 
             panel2.Controls.Add(paintField);
-            panel2.Location = new Point(418, 10);
-            panel2.Margin = new Padding(3, 4, 3, 4);
+            panel2.Location = new Point(366, 8);
             panel2.Name = "panel2";
-            panel2.Size = new Size(738, 500);
+            panel2.Size = new Size(517, 375);
             panel2.TabIndex = 9;
             // 
             // comboBoxShapes
             // 
             comboBoxShapes.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxShapes.FormattingEnabled = true;
-            comboBoxShapes.Items.AddRange(new object[] { "Круг", "Квадрат", "Треугольник" });
-            comboBoxShapes.Location = new Point(30, 65);
-            comboBoxShapes.Margin = new Padding(3, 4, 3, 4);
+            comboBoxShapes.Items.AddRange(new object[] { "Круг", "Квадрат", "Треугольник", "Стрелка" });
+            comboBoxShapes.Location = new Point(26, 49);
             comboBoxShapes.Name = "comboBoxShapes";
-            comboBoxShapes.Size = new Size(197, 28);
+            comboBoxShapes.Size = new Size(173, 23);
             comboBoxShapes.TabIndex = 4;
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(30, 281);
-            btnDelete.Margin = new Padding(3, 4, 3, 4);
+            btnDelete.Location = new Point(26, 211);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(198, 31);
+            btnDelete.Size = new Size(173, 23);
             btnDelete.TabIndex = 3;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = true;
@@ -92,10 +89,9 @@
             // cbSelectMany
             // 
             cbSelectMany.AutoSize = true;
-            cbSelectMany.Location = new Point(30, 227);
-            cbSelectMany.Margin = new Padding(3, 4, 3, 4);
+            cbSelectMany.Location = new Point(26, 170);
             cbSelectMany.Name = "cbSelectMany";
-            cbSelectMany.Size = new Size(369, 24);
+            cbSelectMany.Size = new Size(292, 19);
             cbSelectMany.TabIndex = 1;
             cbSelectMany.Text = "Выделять несколько объектов при пересечении";
             cbSelectMany.UseVisualStyleBackColor = true;
@@ -106,20 +102,18 @@
             comboBoxColor.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxColor.FormattingEnabled = true;
             comboBoxColor.Items.AddRange(new object[] { "Черный", "Синий", "Красный", "Зеленый", "Фиолетовый" });
-            comboBoxColor.Location = new Point(30, 125);
-            comboBoxColor.Margin = new Padding(3, 4, 3, 4);
+            comboBoxColor.Location = new Point(26, 94);
             comboBoxColor.Name = "comboBoxColor";
-            comboBoxColor.Size = new Size(197, 28);
+            comboBoxColor.Size = new Size(173, 23);
             comboBoxColor.TabIndex = 6;
             comboBoxColor.SelectedIndexChanged += comboBoxColor_SelectedIndexChanged;
             // 
             // checkBox1
             // 
             checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(30, 193);
-            checkBox1.Margin = new Padding(3, 4, 3, 4);
+            checkBox1.Location = new Point(26, 145);
             checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(120, 24);
+            checkBox1.Size = new Size(97, 19);
             checkBox1.TabIndex = 0;
             checkBox1.Text = "Работает Ctrl";
             checkBox1.UseVisualStyleBackColor = true;
@@ -128,18 +122,18 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(30, 97);
+            label2.Location = new Point(26, 73);
             label2.Name = "label2";
-            label2.Size = new Size(42, 20);
+            label2.Size = new Size(33, 15);
             label2.TabIndex = 7;
             label2.Text = "Цвет";
             // 
             // blbShape
             // 
             blbShape.AutoSize = true;
-            blbShape.Location = new Point(30, 37);
+            blbShape.Location = new Point(26, 28);
             blbShape.Name = "blbShape";
-            blbShape.Size = new Size(59, 20);
+            blbShape.Size = new Size(47, 15);
             blbShape.TabIndex = 5;
             blbShape.Text = "Фигура";
             // 
@@ -156,17 +150,17 @@
             panel1.Controls.Add(cbSelectMany);
             panel1.Controls.Add(btnDelete);
             panel1.Controls.Add(comboBoxShapes);
-            panel1.Location = new Point(25, 10);
-            panel1.Margin = new Padding(3, 4, 3, 4);
+            panel1.Location = new Point(22, 8);
             panel1.Name = "panel1";
-            panel1.Size = new Size(373, 500);
+            panel1.Size = new Size(326, 375);
             panel1.TabIndex = 8;
             // 
             // btnLoad
             // 
-            btnLoad.Location = new Point(30, 432);
+            btnLoad.Location = new Point(26, 324);
+            btnLoad.Margin = new Padding(3, 2, 3, 2);
             btnLoad.Name = "btnLoad";
-            btnLoad.Size = new Size(198, 29);
+            btnLoad.Size = new Size(173, 22);
             btnLoad.TabIndex = 11;
             btnLoad.Text = "Загрузить";
             btnLoad.UseVisualStyleBackColor = true;
@@ -174,9 +168,10 @@
             // 
             // btnSave
             // 
-            btnSave.Location = new Point(29, 397);
+            btnSave.Location = new Point(25, 298);
+            btnSave.Margin = new Padding(3, 2, 3, 2);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(198, 29);
+            btnSave.Size = new Size(173, 22);
             btnSave.TabIndex = 10;
             btnSave.Text = "Сохранить";
             btnSave.UseVisualStyleBackColor = true;
@@ -184,10 +179,9 @@
             // 
             // btnDeGroup
             // 
-            btnDeGroup.Location = new Point(30, 359);
-            btnDeGroup.Margin = new Padding(3, 4, 3, 4);
+            btnDeGroup.Location = new Point(26, 269);
             btnDeGroup.Name = "btnDeGroup";
-            btnDeGroup.Size = new Size(198, 31);
+            btnDeGroup.Size = new Size(173, 23);
             btnDeGroup.TabIndex = 9;
             btnDeGroup.Text = "Разгруппировать";
             btnDeGroup.UseVisualStyleBackColor = true;
@@ -195,24 +189,31 @@
             // 
             // btnGroup
             // 
-            btnGroup.Location = new Point(30, 320);
-            btnGroup.Margin = new Padding(3, 4, 3, 4);
+            btnGroup.Location = new Point(26, 240);
             btnGroup.Name = "btnGroup";
-            btnGroup.Size = new Size(198, 31);
+            btnGroup.Size = new Size(173, 23);
             btnGroup.TabIndex = 8;
             btnGroup.Text = "Группировать";
             btnGroup.UseVisualStyleBackColor = true;
             btnGroup.Click += btnGroup_Click;
             // 
+            // treeShapes
+            // 
+            treeShapes.Location = new Point(889, 8);
+            treeShapes.Name = "treeShapes";
+            treeShapes.Size = new Size(121, 375);
+            treeShapes.TabIndex = 10;
+            treeShapes.NodeMouseClick += treeShapes_NodeMouseClick;
+            // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1168, 523);
+            ClientSize = new Size(1022, 392);
+            Controls.Add(treeShapes);
             Controls.Add(panel2);
             Controls.Add(panel1);
             KeyPreview = true;
-            Margin = new Padding(3, 4, 3, 4);
             Name = "Form1";
             Text = "Form1";
             KeyDown += Form1_KeyDown;
@@ -239,5 +240,6 @@
         private Button btnDeGroup;
         private Button btnLoad;
         private Button btnSave;
+        private TreeView treeShapes;
     }
 }

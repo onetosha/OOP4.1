@@ -1,5 +1,6 @@
-using OOP4._1.Command;
+
 using OOP4._1.Factory;
+using OOP4._1.Observer;
 using OOP4._1.Service;
 using OOP4._1.Shapes;
 
@@ -13,20 +14,12 @@ namespace OOP4._1
         bool ctrl = false;
         string color = "Black";
         static string[] colors = { "Black", "Blue", "Red", "Green", "Purple" };
-        Dictionary<Keys, ShapeCommand> commands = new Dictionary<Keys, ShapeCommand>()
-        {
-            { Keys.A, new MoveCommand(-10, 0) },
-            { Keys.D, new MoveCommand(10, 0) },
-            { Keys.W, new MoveCommand(0, -10) },
-            { Keys.S, new MoveCommand(0, 10) },
-            { Keys.Q, new SizeCommand(-1) },
-            { Keys.E, new SizeCommand(1) },
-        };
-        Stack<ShapeCommand> history = new Stack<ShapeCommand>();
+        TreeViewObserver observer;
         public Form1()
         {
             InitializeComponent();
-            shapeService = new ShapeService(paintField.Width, paintField.Height);
+            observer = new TreeViewObserver(treeShapes);
+            shapeService = new ShapeService(observer, paintField.Width, paintField.Height);
             map = new Bitmap(paintField.Width, paintField.Height);
             shapeCreator = new ShapeCreator(Graphics.FromImage(map));
             comboBoxShapes.SelectedIndex = 0;
@@ -43,12 +36,40 @@ namespace OOP4._1
             {
                 shapeService.DeleteSelectedShapes();
             }
-            if (e.KeyCode == Keys.A || e.KeyCode == Keys.S || e.KeyCode == Keys.D || e.KeyCode == Keys.W || e.KeyCode == Keys.E || e.KeyCode == Keys.Q)
+            if (e.KeyCode == Keys.A)
             {
-                ShapeCommand command = commands[e.KeyCode];
-                ShapeCommand newcommand = command.Clone();
-                newcommand.Execute(shapeService);
-                history.Push(newcommand);
+
+                shapeService.Move(-5, 0);
+            }
+            if (e.KeyCode == Keys.S)
+            {
+                shapeService.Move(0, 5);
+            }
+            if (e.KeyCode == Keys.D)
+            {
+                shapeService.Move(5, 0);
+            }
+            if (e.KeyCode == Keys.W)
+            {
+                shapeService.Move(0, -5);
+            }
+
+            if (e.KeyCode == Keys.E)
+            {
+                shapeService.ChangeSize(1);
+            }
+
+            if (e.KeyCode == Keys.Q)
+            {
+                shapeService.ChangeSize(-1);
+            }
+            if (e.KeyCode == Keys.G)
+            {
+                shapeService.Group(shapeCreator.CreateCGroup());
+            }
+            if (e.KeyCode == Keys.R)
+            {
+                shapeService.DeGroup();
             }
         }
         private void Form1_KeyUp(object sender, KeyEventArgs e)
@@ -64,19 +85,16 @@ namespace OOP4._1
         {
             if (!shapeService.CheckClick(e.Location) && !ctrl)
             {
-                ShapeCommand command = new AddCommand(shapeService.GetShapes());
                 if (comboBoxShapes.SelectedIndex == 0)
-                    command.Execute(shapeCreator.CreateCircle(e.Location, color));
+                    shapeService.Add(shapeCreator.CreateCircle(e.Location, color));
                 else if (comboBoxShapes.SelectedIndex == 1)
-                    command.Execute(shapeCreator.CreateSquare(e.Location, color));
+                    shapeService.Add(shapeCreator.CreateSquare(e.Location, color));
                 else if (comboBoxShapes.SelectedIndex == 2)
-                    command.Execute(shapeCreator.CreateTriangle(e.Location, color));
-                history.Push(command);
+                    shapeService.Add(shapeCreator.CreateTriangle(e.Location, color));
             }
-            if (shapeService.CheckClick(e.Location))
-            {
-                shapeService.Select(e.Location);
-            }
+            if (comboBoxShapes.SelectedIndex == 3 && shapeService.CountSelected() == 2)
+                shapeService.AddPointer(shapeCreator.CreatePointer());
+           
         }
 
         private void paintField_Paint(object sender, PaintEventArgs e)
@@ -95,9 +113,7 @@ namespace OOP4._1
         private void comboBoxColor_SelectedIndexChanged(object sender, EventArgs e)
         {
             color = colors[comboBoxColor.SelectedIndex];
-            ShapeCommand command = new ColorCommand(color);
-            command.Execute(shapeService);
-            history.Push(command);
+            shapeService.ChangeColor(color);
         }
 
         private void cbSelectMany_CheckedChanged(object sender, EventArgs e)
@@ -130,6 +146,15 @@ namespace OOP4._1
         {
             CShapeArray array = new CShapeArray(Graphics.FromImage(map));
             shapeService.Load(array);
+            shapeService.NotifyEveryone();
+        }
+
+        private void treeShapes_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            observer.NotifyEveryone();
+            if (!ctrl)
+                observer.NodesToWhite();
+            e.Node.BackColor = Color.Gray;
         }
     }
 }

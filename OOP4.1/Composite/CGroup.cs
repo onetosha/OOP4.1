@@ -7,10 +7,11 @@ namespace OOP4._1.Composite
     public class CGroup : Shape
     {
         private Container<Shape> _shapes;
-        public CGroup(Graphics graphics)
+        public CGroup(Graphics graphics, string name)
         {
             g = graphics;
             _shapes = new Container<Shape>();
+            this.Name = name;
         }
         public void AddShape(Shape shape)
         {
@@ -47,6 +48,7 @@ namespace OOP4._1.Composite
             {
                 if (shape.CheckMovePosition(x, y, panelWidth, panelHeight) == false)
                 {
+                    this.NotifyEveryoneSelect();
                     return false;
                 }
             }

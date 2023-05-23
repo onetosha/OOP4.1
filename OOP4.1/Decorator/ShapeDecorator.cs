@@ -1,4 +1,5 @@
 ﻿using OOP4._1.Composite;
+using OOP4._1.Observer;
 using OOP4._1.Shapes;
 
 namespace OOP4._1.Decorator
@@ -6,6 +7,10 @@ namespace OOP4._1.Decorator
     public class ShapeDecorator : Shape
     {
         private Shape _shape;
+        public override string Who()
+        {
+            return _shape.Who();
+        }
         public ShapeDecorator(Shape shape)
         {
             _shape = shape;
@@ -62,6 +67,29 @@ namespace OOP4._1.Decorator
         public override void Load(StreamReader stream)
         {
             _shape.Load(stream);
+        }
+        public override void AddObserver(ICObserver observer)
+        {
+            _shape.AddObserver(observer);
+        }
+        public override void RemoveObservers()
+        {
+            _shape.RemoveObservers();
+        }
+
+        public override void NotifyEveryone()
+        {
+            _shape.NotifyEveryone();
+        }
+
+        public override void NotifyEveryoneSelect()
+        {
+            _shape.NotifyEveryoneSelect();
+        }
+
+        public void OnSubjectMove(int x, int y)
+        {
+            _shape.Move(x, y);
         }
     }
 }

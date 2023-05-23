@@ -4,11 +4,12 @@ namespace OOP4._1.Shapes
 {
     public class CCircle : Shape
     {
-        public CCircle(Point click, Graphics graphics, string color)
+        public CCircle(Point click, Graphics graphics, string color, string name)
         {
             this.p = click;
             this.g = graphics;
             this.color = color;
+            this.Name = name;
         }
         public override void Draw()
         {
