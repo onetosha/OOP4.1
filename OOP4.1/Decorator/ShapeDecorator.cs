@@ -15,6 +15,7 @@ namespace OOP4._1.Decorator
         {
             _shape = shape;
             g = shape.GetGraphics();
+            this.p = shape.GetPoint();
         }
         public Shape GetShape()
         {
@@ -38,6 +39,10 @@ namespace OOP4._1.Decorator
                     decorator.Draw();
                 }
             }
+            if (_shape is Pointer pointer)
+            {
+                pointer.Draw();
+            }
             else
             {
                 Pen pen = new Pen(Color.Black);
@@ -49,6 +54,8 @@ namespace OOP4._1.Decorator
         }
         public override void Move(int x, int y)
         {
+            p.X += x;
+            p.Y += y;
             _shape.Move(x, y);
         }
         public override bool CheckMovePosition(int x, int y, int width, int height)

@@ -162,12 +162,20 @@ namespace OOP4._1.Service
 
         public void DeleteSelectedShapes()
         {
-            foreach(var shape in shapes)
+            for(int i = 0; i < shapes.Count;)
             {
-                if (shape is ShapeDecorator)
+                if (shapes.GetByIndex(i) is ShapeDecorator)
                 {
-                    shapes.Remove(shape);
+                    if (shapes.GetByIndex(i) is Pointer p)
+                    {
+                        p.DeletePointer();
+                    }
+
+                    shapes.RemoveByIndex(i);
+                    //count++;
+                    continue;
                 }
+                ++i;
             }
             this.NotifyEveryone();
         }

@@ -35,6 +35,7 @@ namespace OOP4._1
             if (e.KeyCode == Keys.Delete)
             {
                 shapeService.DeleteSelectedShapes();
+                Refresh();
             }
             if (e.KeyCode == Keys.A)
             {

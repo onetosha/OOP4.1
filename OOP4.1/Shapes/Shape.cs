@@ -6,7 +6,7 @@ namespace OOP4._1.Shapes
     abstract public class Shape : CObject, ICObserver
     {
         public Graphics g;
-        protected Point p;
+        public Point p;
         protected bool selected = false;
         public string color = "Red"; 
         public int height = 40;
